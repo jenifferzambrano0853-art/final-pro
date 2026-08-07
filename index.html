@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>✨ Jeniffer Zambrano · Programación Creativa</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    /* ============================================================
+       VARIABLES GLOBALES Y RESET
+       ============================================================ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg1: #0f0c29;
+      --bg2: #302b63;
+      --bg3: #24243e;
+      --text: #f0e6ff;
+      --gold: #ffd700;
+      --pink: #ff6b9d;
+      --purple: #b38cd9;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 215, 0, 0.2);
+      --shadow: rgba(0, 0, 0, 0.5);
+      --nav-bg: rgba(15, 12, 41, 0.85);
+      --star-color: rgba(255, 255, 255, 0.6);
+      --transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      --font-portafolio: 'Great Vibes', cursive;
+      --font-programacion: 'Poppins', sans-serif;
+    }
+
+    body.dark-mode {
+      --bg1: #1a1a2e;
+      --bg2: #16213e;
+      --bg3: #0f3460;
+      --text: #d4d4f7;
+      --gold: #f5c842;
+      --pink: #ff7eb3;
+      --purple: #9f7ac9;
+      --glass: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 215, 0, 0.1);
+      --nav-bg: rgba(10, 10, 20, 0.9);
+      --star-color: rgba(200, 200, 255, 0.3);
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      padding-top: 80px;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+      background-attachment: fixed;
+      overflow-x: hidden;
+      transition: background 0.8s ease, color 0.6s ease;
+      position: relative;
+      cursor: none;
+    }
+
+    /* ============================================================
+       CURSOR PERSONALIZADO
+       ============================================================ */
+    .cursor-dot {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background 0.2s;
+      box-shadow: 0 0 20px var(--gold), 0 0 60px var(--pink);
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--pink);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s, border-color 0.3s;
+      box-shadow: 0 0 30px rgba(255, 107, 157, 0.3);
+    }
+
+    /* ============================================================
+       PARTÍCULAS DE FONDO (globales)
+       ============================================================ */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--star-color);
+      border-radius: 50%;
+      animation: floatParticle var(--dur) infinite alternate ease-in-out;
+      opacity: 0.3;
+      filter: blur(1px);
+    }
+    @keyframes floatParticle {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.2;
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(1.8);
+        opacity: 0.8;
+      }
+    }
+
+    /* ============================================================
+       ONDAS (fondo decorativo)
+       ============================================================ */
+    .waves {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 30vh;
+      z-index: 0;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .waves svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ============================================================
+       MARIPOSAS (solo para portafolio)
+       ============================================================ */
+    .butterfly {
+      position: fixed;
+      font-size: 2.8rem;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.6;
+      filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
+      transition: transform 0.1s, color 0.3s;
+      animation: flutter 4s infinite alternate ease-in-out;
+    }
+    @keyframes flutter {
+      0% {
+        transform: rotate(-5deg) scale(1);
+      }
+      100% {
+        transform: rotate(5deg) scale(1.1);
+      }
+    }
+
+    /* ============================================================
+       MENÚ DE NAVEGACIÓN (global)
+       ============================================================ */
+    nav {
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      padding: 14px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      transition: background 0.4s, border-color 0.4s;
+    }
+    nav .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+      flex-wrap: wrap;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px 35px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .nav-links li a {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.4rem;
+      color: var(--gold);
+      text-decoration: none;
+      padding: 4px 0;
+      position: relative;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+    .nav-links li a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--pink);
+      transition: width 0.3s;
+    }
+    .nav-links li a:hover::after,
+    .nav-links li a.active::after {
+      width: 100%;
+    }
+    .nav-links li a:hover {
+      color: var(--pink);
+      text-shadow: 0 0 30px var(--gold), 0 0 60px var(--pink);
+    }
+    .nav-links li a.active {
+      color: var(--pink);
+      text-shadow: 0 0 20px var(--gold);
+    }
+    .theme-toggle {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--gold);
+      transition: transform 0.4s, color 0.3s;
+      padding: 0 10px;
+    }
+    .theme-toggle:hover {
+      transform: rotate(180deg) scale(1.2);
+      color: var(--pink);
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+    }
+    .hamburger span {
+      width: 28px;
+      height: 3px;
+      background: var(--gold);
+      border-radius: 3px;
+      transition: 0.3s;
+    }
+
+    /* ============================================================
+       SECCIÓN 1: PORTAFOLIO
+       ============================================================ */
+    .portafolio-section {
+      position: relative;
+      z-index: 1;
+      padding-bottom: 20px;
+    }
+
+    /* Títulos del portafolio */
+    .portafolio-section h1 {
+      font-family: var(--font-portafolio);
+      font-size: 4.2rem;
+      text-align: center;
+      background: linear-gradient(45deg, var(--gold), var(--pink), var(--gold));
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradShift 6s ease infinite;
+      filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.3));
+      margin-top: 10px;
+    }
+    @keyframes gradShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .portafolio-section h2,
+    .portafolio-section h3 {
+      font-family: 'Pacifico', cursive;
+      text-align: center;
+      color: var(--gold);
+      margin: 6px 0;
+      text-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
+    }
+    .portafolio-section h2 { font-size: 2.8rem; }
+    .portafolio-section h3 { font-size: 1.8rem; font-weight: 400; }
+
+    /* Reloj */
+    .clock {
+      text-align: center;
+      font-size: 1.3rem;
+      letter-spacing: 3px;
+      color: var(--text);
+      opacity: 0.7;
+      margin: -5px 0 15px;
+      font-family: 'Dancing Script', cursive;
+    }
+    .clock i { margin-right: 8px; color: var(--gold); }
+
+    /* Logo de programación (reemplaza foto) */
+    .logo-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 25px auto;
+      perspective: 800px;
+    }
+    .logo-container {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, var(--gold), var(--pink));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.4), 0 0 80px rgba(255, 107, 157, 0.3);
+      animation: floatLogo 4s infinite alternate ease-in-out, pulseGlow 3s infinite alternate;
+      transition: transform 0.6s, box-shadow 0.6s;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+    .logo-container:hover {
+      transform: rotateY(15deg) rotateX(8deg) scale(1.05);
+      box-shadow: 0 0 60px rgba(255, 215, 0, 0.6), 0 0 120px rgba(255, 107, 157, 0.5);
+    }
+    .logo-container i {
+      font-size: 5.5rem;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      animation: spinLogo 12s linear infinite;
+      transition: transform 0.4s;
+    }
+    .logo-container:hover i {
+      animation-duration: 4s;
+      color: var(--gold);
+    }
+    @keyframes spinLogo {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+    @keyframes floatLogo {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-15px); }
+    }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.3), 0 0 60px rgba(255, 107, 157, 0.2); }
+      100% { box-shadow: 0 0 60px rgba(255, 215, 0, 0.6), 0 0 120px rgba(255, 107, 157, 0.4); }
+    }
+    .code-lines {
+      position: absolute;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+      font-family: 'Courier New', monospace;
+      pointer-events: none;
+      animation: floatCode 8s infinite alternate ease-in-out;
+    }
+    .code-lines:nth-child(2) { top: -20px; right: -10px; animation-delay: -2s; }
+    .code-lines:nth-child(3) { bottom: -20px; left: -10px; animation-delay: -4s; }
+    .code-lines:nth-child(4) { top: 50%; left: -35px; transform: translateY(-50%) rotate(-90deg); animation-delay: -1s; }
+    @keyframes floatCode {
+      0% { opacity: 0.2; transform: translate(0, 0); }
+      100% { opacity: 0.8; transform: translate(8px, -8px); }
+    }
+
+    /* Tarjetas de sección (portafolio) */
+    .section-card {
+      width: 88%;
+      max-width: 860px;
+      margin: 35px auto;
+      background: var(--glass);
+      backdrop-filter: blur(14px);
+      padding: 30px 40px;
+      border-radius: 30px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 12px 50px var(--shadow);
+      transition: transform 0.5s, box-shadow 0.5s, background 0.4s, border-color 0.4s;
+      opacity: 0;
+      transform: translateY(60px) scale(0.96);
+      transition: opacity 0.9s ease, transform 0.9s ease, background 0.4s, border-color 0.4s, box-shadow 0.5s;
+      color: var(--text);
+      line-height: 1.8;
+      position: relative;
+      overflow: hidden;
+    }
+    .section-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 40%, rgba(255, 215, 0, 0.03), transparent 70%);
+      pointer-events: none;
+      animation: rotateGlow 20s linear infinite;
+    }
+    @keyframes rotateGlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .section-card.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .section-card:hover {
+      transform: translateY(-8px) scale(1.008);
+      box-shadow: 0 20px 70px rgba(255, 215, 0, 0.15);
+      border-color: rgba(255, 215, 0, 0.5);
+    }
+    .section-card h2 {
+      margin-top: 0;
+      font-family: 'Pacifico', cursive;
+      font-size: 2.4rem;
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(255, 107, 157, 0.2);
+      text-align: center;
+    }
+    .section-card p { margin: 8px 0; }
+    .section-card i { margin-right: 12px; color: var(--gold); width: 26px; text-align: center; }
+    .stars { color: var(--gold); font-size: 1.8rem; letter-spacing: 4px; }
+
+    /* Habilidades (barras) */
+    .skill { margin: 18px 0; }
+    .skill span {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .skill .bar-bg {
+      width: 100%;
+      height: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    .skill .bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--pink));
+      border-radius: 30px;
+      transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    /* Proyectos */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+    .project-card {
+      background: var(--glass);
+      backdrop-filter: blur(6px);
+      border-radius: 20px;
+      padding: 20px;
+      border: 1px solid var(--glass-border);
+      text-align: center;
+      transition: transform 0.5s, box-shadow 0.5s, border-color 0.5s;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      box-shadow: 0 8px 30px var(--shadow);
+    }
+    .project-card:hover {
+      transform: rotateY(8deg) rotateX(4deg) scale(1.04);
+      box-shadow: 0 20px 60px rgba(255, 215, 0, 0.2);
+      border-color: var(--gold);
+    }
+    .project-card i {
+      font-size: 3rem;
+      color: var(--gold);
+      margin-bottom: 10px;
+      display: block;
+      transition: transform 0.4s;
+    }
+    .project-card:hover i { transform: scale(1.2) rotate(10deg); }
+    .project-card h4 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: var(--gold);
+    }
+    .project-card p { font-size: 0.95rem; opacity: 0.8; }
+
+    /* ============================================================
+       SEPARADOR ENTRE PORTAFOLIO Y PROGRAMACIÓN
+       ============================================================ */
+    .divider {
+      position: relative;
+      z-index: 1;
+      margin: 60px auto;
+      width: 90%;
+      max-width: 960px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      opacity: 0.7;
+    }
+    .divider-line {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--pink), var(--gold), transparent);
+      animation: shimmer 3s infinite alternate;
+    }
+    .divider-icon {
+      font-size: 2.2rem;
+      color: var(--gold);
+      animation: spinDivider 8s linear infinite;
+      filter: drop-shadow(0 0 20px var(--gold));
+    }
+    @keyframes shimmer {
+      0% { opacity: 0.3; transform: scaleX(0.95); }
+      100% { opacity: 1; transform: scaleX(1.05); }
+    }
+    @keyframes spinDivider {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .divider-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.6rem;
+      color: var(--gold);
+      letter-spacing: 4px;
+      text-shadow: 0 0 30px var(--pink);
+    }
+
+    /* ============================================================
+       SECCIÓN 2: PROGRAMACIÓN BÁSICA
+       ============================================================ */
+    .programacion-section {
+      position: relative;
+      z-index: 1;
+      padding-top: 20px;
+      font-family: var(--font-programacion);
+    }
+    .programacion-section header {
+      text-align: center;
+      padding: 10px 20px;
+    }
+    .programacion-section header h1 {
+      font-family: var(--font-programacion);
+      font-size: 3.6rem;
+      font-weight: 800;
+      background: linear-gradient(45deg, var(--gold), var(--pink), var(--gold));
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradShift 6s ease infinite;
+      filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.2));
+      margin-bottom: 6px;
+    }
+    .programacion-section header p {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      font-weight: 300;
+      letter-spacing: 2px;
+    }
+
+    /* Unidades (acordeón) */
+    .unidad {
+      width: 90%;
+      max-width: 960px;
+      margin: 25px auto;
+      background: var(--glass);
+      backdrop-filter: blur(14px);
+      border-radius: 28px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 12px 50px var(--shadow);
+      overflow: hidden;
+      transition: box-shadow 0.4s, border-color 0.4s;
+    }
+    .unidad:hover {
+      box-shadow: 0 20px 70px rgba(255, 215, 0, 0.12);
+      border-color: rgba(255, 215, 0, 0.3);
+    }
+    .unidad-header {
+      padding: 18px 25px;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid transparent;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .unidad-header:hover {
+      background: rgba(255, 215, 0, 0.04);
+    }
+    .unidad-header h2 {
+      font-family: var(--font-programacion);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .unidad-header h2 i { color: var(--pink); }
+    .unidad-header .icon-toggle {
+      font-size: 1.6rem;
+      color: var(--gold);
+      transition: transform 0.4s;
+    }
+    .unidad-header .icon-toggle.rotated { transform: rotate(180deg); }
+
+    .unidad-body {
+      display: none;
+      padding: 0 25px 25px;
+      animation: fadeSlide 0.5s ease forwards;
+    }
+    .unidad-body.open { display: block; }
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateY(-10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Temas (subacordeones) */
+    .tema {
+      margin: 16px 0 8px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .tema:hover {
+      border-color: rgba(255, 215, 0, 0.2);
+    }
+    .tema-header {
+      padding: 14px 20px;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.01);
+      transition: background 0.3s;
+    }
+    .tema-header:hover {
+      background: rgba(255, 215, 0, 0.04);
+    }
+    .tema-header h3 {
+      font-family: var(--font-programacion);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tema-header h3 i { color: var(--purple
